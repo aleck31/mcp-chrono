@@ -24,6 +24,7 @@ export function register(server: McpServer): void {
 
       const result: Record<string, unknown> = {
         timezone: tz,
+        timestamp: now.toMillis(),
         year: now.year,
         month: now.month,
         day: now.day,

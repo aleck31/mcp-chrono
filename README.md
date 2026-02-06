@@ -120,41 +120,161 @@ npx mcp-chrono --data-dir /tmp/mcp-chrono-data
 
 ### Time & Timezone
 
-| Tool | Description |
-|------|-------------|
-| `get_current_time` | Get current time in any IANA timezone with detailed components (weekday, week of year, day of year, UTC offset, etc.) |
-| `convert_timezone` | Convert a datetime between two IANA timezones |
-| `list_timezones` | Search IANA timezones with current offsets and Chinese city names |
-| `parse_timestamp` | Parse Unix timestamps (seconds/milliseconds) or ISO 8601 strings into date components |
+#### `get_current_time`
+
+Get current time in any IANA timezone with detailed components (timestamp, weekday, week of year, day of year, UTC offset, etc.)
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `timezone` | string | No | `UTC` | IANA timezone (e.g. `Asia/Shanghai`, `America/New_York`) |
+| `format` | string | No | `iso` | Output format: `iso`, `human`, or `relative` |
+
+#### `convert_timezone`
+
+Convert a datetime between two IANA timezones.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `datetime` | string | Yes | ISO 8601 datetime (e.g. `2024-01-15T10:30:00`) |
+| `from_timezone` | string | Yes | Source IANA timezone |
+| `to_timezone` | string | Yes | Target IANA timezone |
+
+#### `list_timezones`
+
+Search IANA timezones with current offsets and Chinese city names.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `query` | string | No | Search by timezone name, city, or Chinese name |
+| `continent` | string | No | Filter by continent (e.g. `Asia`, `Europe`, `America`) |
+
+#### `parse_timestamp`
+
+Parse Unix timestamps (seconds/milliseconds) or ISO 8601 strings into date components.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `input` | string \| number | Yes | - | Unix timestamp (seconds or milliseconds) or ISO 8601 string |
+| `timezone` | string | No | `UTC` | IANA timezone for output |
+
+---
 
 ### Date Calculation
 
-| Tool | Description |
-|------|-------------|
-| `calculate_time` | Add/subtract time from a date. Three modes: **gregorian** (standard), **lunar** (Chinese calendar arithmetic), **anchor** (offset from a named festival like 春节 or Thanksgiving) |
-| `date_diff` | Difference between two dates in years, months, days, hours, minutes, and total counts |
-| `countdown` | Countdown from now to a target date with remaining days/hours/minutes/seconds |
-| `calculate_business_days` | Count or add business days, skipping weekends and optionally public holidays (supports CN makeup workdays) |
+#### `calculate_time`
+
+Add/subtract time from a date. Returns a new date after applying the offset.
+
+Three modes: **gregorian** (standard date arithmetic), **lunar** (Chinese calendar arithmetic), **anchor** (offset from a named festival like 春节 or Thanksgiving).
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `mode` | string | No | `gregorian` | Calculation mode: `gregorian`, `lunar`, or `anchor` |
+| `base_date` | string | No | now | Base date in ISO format. Defaults to current time if omitted |
+| `timezone` | string | No | `UTC` | IANA timezone for the base date |
+| `years` | integer | No | - | Years to add (negative to subtract) |
+| `months` | integer | No | - | Months to add (negative to subtract) |
+| `days` | integer | No | - | Days to add (negative to subtract) |
+| `hours` | integer | No | - | Hours to add (negative to subtract) |
+| `minutes` | integer | No | - | Minutes to add (negative to subtract) |
+| `festival` | string | No | - | Festival name for `anchor` mode (e.g. `春节`, `Christmas`, `Thanksgiving`) |
+| `festival_year` | integer | No | - | Year to resolve festival date for `anchor` mode |
+
+#### `date_diff`
+
+Calculate the difference between two dates in years, months, days, hours, minutes, and total counts.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `start` | string | Yes | - | Start date in ISO 8601 format |
+| `end` | string | Yes | - | End date in ISO 8601 format |
+| `timezone` | string | No | `UTC` | IANA timezone for parsing dates |
+
+#### `countdown`
+
+Countdown from now to a target date with remaining days/hours/minutes/seconds.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `target` | string | Yes | - | Target date/time in ISO 8601 format |
+| `timezone` | string | No | `UTC` | IANA timezone for the target date |
+
+#### `calculate_business_days`
+
+Count or add business days, skipping weekends and optionally public holidays (supports CN makeup workdays).
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `action` | string | Yes | - | `count` (count business days between two dates) or `add` (add business days to a date) |
+| `from` | string | Yes | - | Start date in `YYYY-MM-DD` format |
+| `to` | string | No | - | End date in `YYYY-MM-DD` format (required for `count`) |
+| `business_days` | integer | No | - | Number of business days to add (required for `add`, negative to subtract) |
+| `country` | string | No | - | Country code for public holidays (e.g. `CN`, `US`) |
+| `timezone` | string | No | `UTC` | IANA timezone |
+
+---
 
 ### Calendar & Festivals
 
-| Tool | Description |
-|------|-------------|
-| `convert_calendar` | Convert between Gregorian and Chinese Lunar calendar. Returns Ganzhi (干支), zodiac, solar terms, festivals, constellation |
-| `get_festivals` | List festivals, solar terms, and public holidays within a date range. Filterable by type |
-| `get_month_info` | Month details: day count, first/last weekday, leap year, quarter, week count |
+#### `convert_calendar`
+
+Convert between Gregorian and Chinese Lunar calendar. Returns Ganzhi (干支), zodiac, solar terms, festivals, constellation.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `direction` | string | Yes | - | `gregorian_to_lunar` or `lunar_to_gregorian` |
+| `year` | integer | Yes | - | Year |
+| `month` | integer | Yes | - | Month (1–12) |
+| `day` | integer | Yes | - | Day (1–31) |
+| `isLeapMonth` | boolean | No | `false` | For `lunar_to_gregorian`: whether the month is a leap month (闰月) |
+
+#### `get_festivals`
+
+List festivals, solar terms, and public holidays within a date range. Filterable by type.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `start_date` | string | Yes | - | Start date in `YYYY-MM-DD` format |
+| `end_date` | string | Yes | - | End date in `YYYY-MM-DD` format |
+| `country` | string | No | `CN` | Country code for public holidays (e.g. `CN`, `US`, `HK`) |
+| `types` | string[] | No | - | Filter by type: `lunar_festival`, `solar_festival`, `solar_term`, `public_holiday` |
+
+#### `get_month_info`
+
+Month details: day count, first/last weekday, leap year, quarter, week count.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `year` | integer | Yes | Year (e.g. 2024) |
+| `month` | integer | Yes | Month (1–12) |
+
+---
 
 ### Chinese Almanac
 
-| Tool | Description |
-|------|-------------|
-| `get_almanac` | Chinese almanac (黄历) for a date: 宜 (suitable) / 忌 (avoid) activities, lucky directions (喜神/财神/福神), conflict zodiac, 彭祖百忌, 吉神宜趋, 凶煞宜忌, 天神, 纳音, and more |
+#### `get_almanac`
+
+Chinese almanac (黄历) for a date: 宜/忌 activities, lucky directions (喜神/财神/福神), conflict zodiac, 彭祖百忌, 吉神宜趋, 凶煞宜忌, 天神, 纳音, and more.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `date` | string | No | today | Date in `YYYY-MM-DD` format |
+
+---
 
 ### Persistent Countdowns
 
-| Tool | Description |
-|------|-------------|
-| `manage_countdown` | CRUD for persistent countdown timers (set / get / list / delete), stored as JSON on disk |
+#### `manage_countdown`
+
+CRUD for persistent countdown timers, stored as JSON on disk.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `action` | string | Yes | - | `set`, `get`, `list`, or `delete` |
+| `id` | string | No | - | Countdown ID (required for `get` / `delete`; auto-generated for `set` if omitted) |
+| `name` | string | No | - | Name/description (required for `set`) |
+| `target_date` | string | No | - | Target date in ISO 8601 format (required for `set`) |
+| `timezone` | string | No | `UTC` | IANA timezone |
 
 ## Supported Regions
 

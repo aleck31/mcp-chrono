@@ -55,7 +55,7 @@ export function register(server: McpServer): void {
             }
           }
         } else if (!base_date) {
-          return { content: [{ type: "text", text: JSON.stringify({ error: "base_date is required for gregorian/lunar modes" }) }] };
+          baseDateTime = DateTime.now().setZone(tz);
         } else {
           baseDateTime = DateTime.fromISO(base_date, { zone: tz });
         }

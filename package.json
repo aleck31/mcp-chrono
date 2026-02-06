@@ -1,6 +1,6 @@
 {
   "name": "mcp-chrono",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for time, calendar, timezone, Chinese lunar calendar, almanac, and date utilities",
   "type": "module",
   "author": "aleck31",

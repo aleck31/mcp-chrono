@@ -3,9 +3,18 @@
   "version": "1.0.0",
   "description": "MCP server for time, calendar, timezone, Chinese lunar calendar, almanac, and date utilities",
   "type": "module",
+  "author": "aleck31",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aleck31/mcp-chrono.git"
+  },
+  "homepage": "https://github.com/aleck31/mcp-chrono#readme",
+  "bugs": {
+    "url": "https://github.com/aleck31/mcp-chrono/issues"
+  },
   "bin": {
-    "mcp-chrono": "./build/index.js"
+    "mcp-chrono": "build/index.js"
   },
   "files": [
     "build"

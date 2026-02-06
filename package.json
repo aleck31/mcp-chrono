@@ -1,0 +1,41 @@
+{
+  "name": "mcp-chrono",
+  "version": "1.0.0",
+  "description": "MCP server for time, calendar, timezone, Chinese lunar calendar, almanac, and date utilities",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "mcp-chrono": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "start": "node build/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "time",
+    "timezone",
+    "calendar",
+    "lunar",
+    "chinese-calendar",
+    "almanac",
+    "festivals",
+    "holidays"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "lunar-typescript": "^1.8.4",
+    "luxon": "^3.5.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.4.2",
+    "@types/node": "^22.13.1",
+    "typescript": "^5.7.3"
+  }
+}
